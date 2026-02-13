@@ -1,6 +1,7 @@
 package com.metacontent.cobblenav.client.gui.util
 
 import com.cobblemon.mod.common.client.render.drawScaledText
+import com.metacontent.cobblenav.client.CobblenavClient
 import com.metacontent.cobblenav.spawndata.SpawnData
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
@@ -35,7 +36,7 @@ fun GuiGraphics.renderSpawnDataTooltip(
     }
 
     this.renderAdvancedTooltip(
-        header = if (spawnData.encountered) spawnData.renderable.species.translatedName else Component.translatable("gui.cobblenav.spawn_data.unknown_pokemon"),
+        header = if (spawnData.encountered || !CobblenavClient.config.obscureUnknownPokemon) spawnData.renderable.species.translatedName else Component.translatable("gui.cobblenav.spawn_data.unknown_pokemon"),
         body = body,
         items = spawnData.blockConditions.asItemStacks,
         mouseX = mouseX,
