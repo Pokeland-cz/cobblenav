@@ -109,8 +109,21 @@ fun getTimeString(time: Long): String {
 fun splitText(text: MutableComponent, targetWidth: Int): List<MutableComponent> = Minecraft
 	.getInstance()
 	.font.splitter
-	.splitLines(text, targetWidth, Style.EMPTY)
-	.map { Component.literal(it.string).withStyle(text.style) }
+	.splitLines(text.stripHoverEvents(), targetWidth, Style.EMPTY)
+	.map { Component.literal(it.string).withStyle(text.style.withHoverEvent(null)) }
+
+fun MutableComponent.stripHoverEvents(): MutableComponent {
+	val newStyle = this.style.withHoverEvent(null)
+	val newComponent = this.plainCopy().withStyle(newStyle)
+	this.siblings.forEach { sibling ->
+		if (sibling is MutableComponent) {
+			newComponent.append(sibling.stripHoverEvents())
+		} else {
+			newComponent.append(sibling.copy())
+		}
+	}
+	return newComponent
+}
 
 fun interpolate(start: RGB, end: RGB, progress: Float): RGB = RGB(
 	interpolateChannel(start.r, end.r, progress),

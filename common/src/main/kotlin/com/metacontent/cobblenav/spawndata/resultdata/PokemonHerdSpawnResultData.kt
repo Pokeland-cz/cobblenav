@@ -16,6 +16,7 @@ import com.metacontent.cobblenav.client.gui.widget.spawndata.SpawnDataDetailWidg
 import com.metacontent.cobblenav.utils.I18nUtil.label
 import com.metacontent.cobblenav.utils.RGB
 import com.metacontent.cobblenav.utils.extensions.createAndGetAsRenderable
+import com.metacontent.cobblenav.utils.extensions.stripHoverEvents
 import com.mojang.blaze3d.vertex.PoseStack
 import net.minecraft.client.gui.components.AbstractWidget
 import net.minecraft.network.RegistryFriendlyByteBuf
@@ -104,7 +105,7 @@ class PokemonHerdSpawnResultData(
 					text =
 					label("spawn_data.pokemon_herd").also { component ->
 						allPokemon.keys.forEachIndexed { index, pokemon ->
-							component.append(pokemon.species.translatedName)
+							component.append(pokemon.species.translatedName.stripHoverEvents())
 							if (index < allPokemon.size - 1) {
 								component.append(", ")
 							}

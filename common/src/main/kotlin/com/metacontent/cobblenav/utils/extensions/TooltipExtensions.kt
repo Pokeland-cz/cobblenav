@@ -24,8 +24,8 @@ fun GuiGraphics.renderMultilineTextTooltip(
 	headerColor: Int,
 	delta: Float = 0f,
 ) = renderAdvancedTooltip(
-	header = header,
-	body = splitText(body, targetWidth),
+	header = header.stripHoverEvents(),
+	body = splitText(body.stripHoverEvents(), targetWidth),
 	mouseX = mouseX,
 	mouseY = mouseY,
 	x1 = x1,
@@ -62,9 +62,12 @@ fun GuiGraphics.renderAdvancedTooltip(
 ) {
 	val poseStack = this.pose()
 	val font = Minecraft.getInstance().font
-	val width = min(max(body?.maxOf { font.width(it) } ?: 0, font.width(header)) + 6, 130)
-	val splittedHeader = splitText(header, width)
-	val splittedBody = body?.flatMap { splitText(it, width) }
+	val safeHeader = header.stripHoverEvents()
+	val safeBody = body?.map { it.stripHoverEvents() }
+
+	val width = min(max(safeBody?.maxOf { font.width(it) } ?: 0, font.width(safeHeader)) + 6, 130)
+	val splittedHeader = splitText(safeHeader, width)
+	val splittedBody = safeBody?.flatMap { splitText(it, width) }
 	val headerHeight = splittedHeader.size * lineHeight
 	val bodyHeight = (splittedBody?.size ?: 0) * lineHeight
 	val itemHeight = (items?.let { if (it.isEmpty()) 0 else 18 + 16 * (it.size * 16 / width) } ?: 0)

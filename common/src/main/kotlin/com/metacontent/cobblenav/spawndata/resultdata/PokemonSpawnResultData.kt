@@ -18,6 +18,7 @@ import com.metacontent.cobblenav.client.gui.widget.spawndata.SpawnDataDetailWidg
 import com.metacontent.cobblenav.utils.I18nUtil.label
 import com.metacontent.cobblenav.utils.RGB
 import com.metacontent.cobblenav.utils.extensions.createAndGetAsRenderable
+import com.metacontent.cobblenav.utils.extensions.stripHoverEvents
 import com.mojang.blaze3d.vertex.PoseStack
 import net.minecraft.client.gui.components.AbstractWidget
 import net.minecraft.network.RegistryFriendlyByteBuf
@@ -107,7 +108,7 @@ class PokemonSpawnResultData(
 					x = 0,
 					y = 0,
 					width = SpawnDataDetailWidget.SECTION_WIDTH - 2,
-					text = label("spawn_data.pokemon").append(pokemon.species.translatedName),
+					text = label("spawn_data.pokemon").append(pokemon.species.translatedName.stripHoverEvents()),
 				),
 			)
 		level?.let {
@@ -178,7 +179,7 @@ class PokemonSpawnResultData(
 
 	override fun getColor() = pokemon.form.primaryType.hue
 
-	override fun getResultName(): MutableComponent = pokemon.species.translatedName
+	override fun getResultName(): MutableComponent = pokemon.species.translatedName.stripHoverEvents()
 
 	override fun shouldRenderPlatform() = renderer.shouldRenderPlatform()
 
