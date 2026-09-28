@@ -18,3 +18,12 @@ fun RegistryLikeCondition<*>.toResourceLocation(): ResourceLocation? {
 	}
 	return null
 }
+
+private val PREDEFINED_BUCKET_ORDER = listOf("common", "uncommon", "rare", "ultra-rare")
+
+fun List<String>.sortBuckets(): List<String> = this.sortedWith(
+	compareBy<String> {
+		val index = PREDEFINED_BUCKET_ORDER.indexOf(it)
+		if (index == -1) Int.MAX_VALUE else index
+	}.thenBy { it },
+)
